@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  dendrite:
+    image: matrixdotorg/dendrite-monolith:latest
+    container_name: mchs-dendrite
+    restart: unless-stopped
+    command: ["--really-enable-open-registration"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8008:8008"
+      - "8448:8448"
+    volumes:
+      - ./dendrite-config:/etc/dendrite
+      - dendrite_data:/var/dendrite
+    networks:
+      - matrix
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: dendrite-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dendrite
+      POSTGRES_PASSWORD: mchs_robotics_secure_password
+      POSTGRES_DB: dendrite
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dendrite"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - matrix
+
+  caddy:
+    image: caddy:latest
+    container_name: mchs-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8448:8448"
+    volumes:
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - matrix
+    environment:
+      - ACME_AGREE=true
+
+networks:
+  matrix:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  dendrite_data:

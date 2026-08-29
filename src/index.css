@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-frc-blue: #0066B3;
+  --color-frc-red: #ED1C24;
+  --color-frc-yellow: #FFC72C;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
