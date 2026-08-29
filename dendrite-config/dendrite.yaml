@@ -66,11 +66,11 @@ global:
     max_age: 1h
 
   # The server name to delegate server-server communications to, with optional port
-  # e.g. localhost:443
-  well_known_server_name: ""
+  # e.g. matrix.mchsrobotics.dev:443
+  well_known_server_name: "matrix.mchsrobotics.dev:443"
 
-  # The base URL to delegate client-server communications to e.g. https://localhost
-  well_known_client_name: ""
+  # The base URL to delegate client-server communications to e.g. https://matrix.mchsrobotics.dev
+  well_known_client_name: "https://matrix.mchsrobotics.dev"
 
   # The server name to delegate sliding sync communications to, with optional port.
   # Requires `well_known_client_name` to also be configured.
