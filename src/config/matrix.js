@@ -1,6 +1,6 @@
 export const matrixConfig = {
   homeserverUrl: 'https://matrix.mchsrobotics.dev',
   userId: '@mchs_robotics:mchsrobotics.dev',
-  accessToken: 'YOUR_ACCESS_TOKEN', // Replace with actual access token after creating user
-  roomId: '!rV5ADbihXBvRfYTe:mchsrobotics.dev',
+  accessToken: 'oAk6CMOEZW4KlwkLgCQ7bGmTc-8rxIlaZAYTLi4sAW0',
+  roomId: '!90VPR3Bd5d7Zi4lF:mchsrobotics.dev',
 };

@@ -2,19 +2,30 @@
 mchsrobotics.dev {
     # Trust Cloudflare's IPs
     trusted_proxies 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 172.64.0.0/13 131.0.72.0/22
-    
+
     # Matrix Client API - route to dendrite
-    reverse_proxy /_matrix/* dendrite:8008
-    reverse_proxy /_synapse/* dendrite:8008
-    
+    handle /_matrix/* {
+        reverse_proxy dendrite:8008
+    }
+    handle /_synapse/* {
+        reverse_proxy dendrite:8008
+    }
+
     # Well-Known Matrix configuration for federation
     handle /.well-known/matrix/server {
         respond `{"m.server": "matrix.mchsrobotics.dev:443"}`
     }
-    
+
     handle /.well-known/matrix/client {
         header Access-Control-Allow-Origin *
         respond `{"m.homeserver": {"base_url": "https://matrix.mchsrobotics.dev"}}`
+    }
+
+    # Serve the React frontend (built output in /srv/www)
+    handle {
+        root * /srv/www
+        try_files {path} /index.html
+        file_server
     }
 }
 
@@ -22,13 +33,15 @@ mchsrobotics.dev {
 matrix.mchsrobotics.dev {
     # Trust Cloudflare's IPs
     trusted_proxies 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 172.64.0.0/13 131.0.72.0/22
-    
+
     # Matrix Client API
     reverse_proxy /_matrix/* dendrite:8008
     reverse_proxy /_synapse/* dendrite:8008
-    
-    # Federation API (server-to-server communication on port 8448)
-    reverse_proxy /_matrix/federation/* dendrite:8008
+}
+
+# Federation port - matrix.mchsrobotics.dev:8448
+matrix.mchsrobotics.dev:8448 {
+    reverse_proxy dendrite:8008
 }
 
 # Local development fallback (uncomment for local testing)

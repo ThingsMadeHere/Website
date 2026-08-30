@@ -1,133 +1,127 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, HelpCircle, Mail, MessageCircle } from 'lucide-react';
+import { ChevronDown, Mail, MessageCircle } from 'lucide-react';
 
 const faqData = [
   {
     question: 'What is FRC?',
-    answer: 'FRC (FIRST Robotics Competition) is an international high school robotics competition. Each year, teams of students, mentors, and coaches build and program industrial-size robots to play a difficult field game against like-minded competitors. It\'s as close to real-world engineering as a student can get.'
+    answer: "FRC (FIRST Robotics Competition) is an international high school robotics competition. Each year, teams build and program industrial-size robots to compete in a challenging field game — as close to real-world engineering as a student can get."
   },
   {
     question: 'Who can join MCHS Robotics?',
-    answer: 'Any student at MCHS can join our robotics team! We welcome students with all skill levels and interests. Whether you\'re interested in programming, mechanical design, electrical work, marketing, or just want to learn, there\'s a place for you on our team.'
+    answer: "Any MCHS student can join — no experience required. Whether you're interested in programming, mechanical design, electrical work, marketing, or just want to learn, there's a place for you."
   },
   {
     question: 'When and where does the team meet?',
-    answer: 'We meet regularly in the school\'s robotics shop. During build season (January-February), we meet more frequently, including some weekends. Check our Matrix chat or contact a team lead for the current schedule.'
+    answer: "We meet regularly in the school's robotics shop. During build season (January–February), meetings increase in frequency. Check the Matrix chat or contact a team lead for the current schedule."
   },
   {
     question: 'What skills will I learn?',
-    answer: 'Team members learn valuable skills including CAD design, programming (Java/C++/Python), electrical wiring, mechanical fabrication, project management, teamwork, and communication. These skills are valuable for college and future careers in STEM fields.'
+    answer: 'Members learn CAD design, programming (Java/C++/Python), electrical wiring, mechanical fabrication, project management, and communication — all of which translate directly to college and STEM careers.'
   },
   {
     question: 'Does it cost anything to join?',
-    answer: 'There are no dues to join the team. However, we do fundraising throughout the year to cover competition fees, parts, and travel expenses. We encourage all team members to participate in fundraising activities.'
+    answer: 'No dues to join. We fundraise throughout the year to cover competition fees, parts, and travel expenses. All members are encouraged to participate in fundraising activities.'
   },
   {
     question: 'What is the time commitment?',
-    answer: 'During the off-season, we typically meet 2-3 times per week. During build season (6 weeks starting in early January), the commitment increases significantly as we work to complete our robot for competition. We understand that students have other commitments and work to accommodate schedules.'
+    answer: 'Off-season: 2–3 meetings per week. Build season (6 weeks in January): significantly more. We work to accommodate other commitments and understand students have busy schedules.'
   },
   {
     question: 'Do I need prior experience?',
-    answer: 'No prior experience is required! We teach new members everything they need to know. Our veteran members and mentors are always willing to help beginners learn. The most important things are enthusiasm and willingness to learn.'
+    answer: "None required. Our veteran members and mentors teach everything from the ground up. Enthusiasm and willingness to learn are all you need."
   },
   {
     question: 'What competitions do you participate in?',
-    answer: 'We participate in the FRC season, which includes regional competitions and potentially the World Championship if we qualify. We also sometimes participate in off-season events to give new members experience and test our robot.'
+    answer: 'We compete in regional FRC events and potentially the World Championship if we qualify. We also attend off-season events to give newer members competition experience.'
   },
   {
     question: 'How can parents get involved?',
-    answer: 'Parents can help by volunteering at competitions, assisting with fundraising, providing mentorship in their areas of expertise, or simply supporting team members. We appreciate all parental support!'
+    answer: 'Parents can volunteer at competitions, help with fundraising, offer mentorship in their areas of expertise, or simply support team members.'
   },
   {
     question: 'What is the Matrix chat?',
-    answer: 'Matrix is an open network for secure, decentralized communication. Our team uses Matrix for real-time coordination, announcements, and discussions. It\'s optimized for team communication and keeps everyone connected.'
+    answer: "Matrix is an open, decentralized communication network. Our team uses it for real-time coordination, announcements, and discussions — keeping everyone connected securely without relying on proprietary platforms."
   }
 ];
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
 
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 py-12 px-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-20 w-72 h-72 bg-frc-blue/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 left-20 w-96 h-96 bg-frc-yellow/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-      </div>
+    <div className="min-h-screen py-16 px-6" style={{ background: 'var(--bg-base)' }}>
+      <div className="max-w-xl mx-auto">
 
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
-
-      <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-12">
-          <div className="w-20 h-20 bg-gradient-to-br from-frc-yellow to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-yellow-500/30">
-            <HelpCircle className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-5xl font-bold text-white mb-4">
-            <span className="bg-gradient-to-r from-blue-400 via-white to-blue-400 bg-clip-text text-transparent">
-              Frequently Asked Questions
-            </span>
+        {/* Header */}
+        <div className="mb-12">
+          <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--text-subtle)' }}>
+            FAQ
+          </p>
+          <h1 className="text-2xl font-semibold mb-2"
+              style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Frequently Asked Questions
           </h1>
-          <p className="text-xl text-blue-200">Everything you need to know about MCHS Robotics</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+            Everything you need to know about MCHS Robotics Team 5728.
+          </p>
         </div>
 
-        <div className="space-y-4">
+        {/* Items */}
+        <div style={{ borderTop: '1px solid var(--border)' }}>
           {faqData.map((faq, index) => (
-            <div
-              key={index}
-              className={`bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 overflow-hidden transition-all duration-300 ${
-                openIndex === index ? 'shadow-2xl shadow-blue-500/20' : 'hover:shadow-xl hover:shadow-blue-500/10'
-              }`}
-            >
+            <div key={index} style={{ borderBottom: '1px solid var(--border)' }}>
               <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full py-4 flex items-center justify-between text-left group"
               >
-                <span className="text-white font-semibold pr-4 text-lg">{faq.question}</span>
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
-                  openIndex === index 
-                    ? 'bg-frc-yellow rotate-180' 
-                    : 'bg-slate-700/50 hover:bg-slate-700'
-                }`}>
-                  {openIndex === index ? (
-                    <ChevronUp className="w-5 h-5 text-white" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-white" />
-                  )}
-                </div>
+                <span className="text-sm pr-6 transition-colors duration-150"
+                      style={{ color: openIndex === index ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                  {faq.question}
+                </span>
+                <ChevronDown
+                  className="w-4 h-4 flex-shrink-0 transition-transform duration-200"
+                  style={{
+                    color: 'var(--text-subtle)',
+                    transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)'
+                  }}
+                />
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-5 pt-2">
-                  <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-4" />
-                  <p className="text-blue-200 leading-relaxed">{faq.answer}</p>
-                </div>
+                <p className="pb-4 text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                  {faq.answer}
+                </p>
               )}
             </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <p className="text-blue-300 mb-6 text-lg">Still have questions?</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-frc-blue to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all font-medium shadow-lg shadow-blue-500/30">
-              <Mail className="w-5 h-5" />
+        {/* CTA */}
+        <div className="mt-12 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
+          <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>Still have questions?</p>
+          <div className="flex gap-2">
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded text-xs transition-colors duration-150"
+              style={{ border: '1px solid var(--border-light)', color: 'var(--text-muted)' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-subtle)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            >
+              <Mail className="w-3.5 h-3.5" />
               Contact Us
             </button>
-            <button className="flex items-center justify-center gap-2 px-8 py-4 bg-slate-800/80 backdrop-blur text-white rounded-xl hover:bg-slate-700/80 transition-all font-medium border border-slate-700/50">
-              <MessageCircle className="w-5 h-5 text-frc-yellow" />
-              Join Matrix Chat
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded text-xs transition-colors duration-150"
+              style={{ border: '1px solid var(--border-light)', color: 'var(--text-muted)' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--text-subtle)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              Join Chat
             </button>
           </div>
         </div>
 
-        <div className="mt-12 text-center">
-          <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-6" />
-          <p className="text-blue-400/60 text-sm">© 2026 MCHS Robotics - FRC Team</p>
-        </div>
+        <p className="mt-12 text-xs" style={{ color: 'var(--text-subtle)' }}>
+          © {new Date().getFullYear()} MCHS Robotics · Team 5728
+        </p>
       </div>
     </div>
   );
