@@ -2,7 +2,7 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL ||
-    'postgresql://dendrite:mchs_robotics_secure_password@postgres/dendrite',
+    'postgresql://mchs_admin:admin_password@localhost:5432/mchs_db',
 });
 
 // Initialize schema on startup
