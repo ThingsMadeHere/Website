@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LandingPage from './components/LandingPage';
 import MatrixChat from './components/MatrixChat';
 import FAQ from './components/FAQ';
@@ -71,15 +71,15 @@ function Navigation({ currentView, setCurrentView, session, onLogout }) {
 
 export default function App() {
   const [currentView, setCurrentView] = useState('chat');
-  const [session, setSession]         = useState(null); // { userId, accessToken, deviceId, verified }
-
-  // Restore session from localStorage on load
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(SESSION_KEY);
-      if (saved) setSession(JSON.parse(saved));
-    } catch { /* ignore */ }
-  }, []);
+  
+  // Initialize session from localStorage if available
+  let initialSession = null;
+  try {
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (saved) initialSession = JSON.parse(saved);
+  } catch { /* ignore */ }
+  
+  const [session, setSession] = useState(initialSession);
 
   const handleVerified = (sessionData) => {
     setSession(sessionData);

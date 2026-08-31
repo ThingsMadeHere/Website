@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, CheckCircle, XCircle, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
+import { Upload, CheckCircle, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
 import logo from '../assets/output-onlinepngtools.png';
 
 const API = '/api';
@@ -23,13 +23,6 @@ export default function LandingPage({ onVerified }) {
   const [dragging, setDragging]   = useState(false);
   const [pendingSession, setPendingSession] = useState(null);
   const fileInputRef = useRef(null);
-
-  const reset = () => {
-    setAuthStep('form');
-    setError('');
-    setUsername('');
-    setPassword('');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +55,7 @@ export default function LandingPage({ onVerified }) {
         // New user or unverified — ask for photo
         setAuthStep('verify');
       }
-    } catch (err) {
+    } catch {
       setError('Could not reach server. Try again.');
       setAuthStep('form');
     }

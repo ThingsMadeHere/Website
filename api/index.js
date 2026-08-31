@@ -9,8 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 // Dendrite internal URL (container-to-container)
 const DENDRITE_URL     = process.env.DENDRITE_URL     || 'http://mchs-dendrite:8008';
-const SHARED_SECRET    = process.env.SHARED_SECRET    || 'mchs_robotics_registration_secret';
-const MCHS_BOT_TOKEN   = process.env.MCHS_BOT_TOKEN   || '';
+const SHARED_SECRET = process.env.SHARED_SECRET || 'mchs_robotics_registration_secret';
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -74,7 +73,7 @@ app.post('/api/register', async (req, res) => {
   // Matrix spec: 1–255 chars, only a-z 0-9 . _ - /
   // We enforce lowercase and reasonable length
   const cleaned = username.toLowerCase().trim();
-  if (!/^[a-z0-9._\-\/]{1,64}$/.test(cleaned))
+  if (!/^[a-z0-9._\-/]{1,64}$/.test(cleaned))
     return res.status(400).json({ error: 'Username may only contain letters, numbers, and . _ - characters' });
 
   if (password.length < 6)
