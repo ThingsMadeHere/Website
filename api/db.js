@@ -5,7 +5,7 @@ const dbPath = process.env.DATABASE_PATH || path.join(__dirname, 'mchs.db');
 const db = new Database(dbPath);
 
 // Initialize schema on startup
-function initDb() {
+async function initDb() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS site_users (
       device_id   TEXT        PRIMARY KEY,
