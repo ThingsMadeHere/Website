@@ -15,6 +15,10 @@ const faqData = [
     answer: "We meet regularly in the school's robotics shop. During build season (January–February), meetings increase in frequency. Check the Matrix chat or contact a team lead for the current schedule."
   },
   {
+    question: 'Where are the weekly meetings held?',
+    answer: "<p>We have two weekly meeting locations:</p><ul><li><strong>Wednesdays</strong> during lunch in <strong>F1</strong></li><li><strong>Thursdays</strong> from 4:00 PM to 6:00 PM in <strong>C5</strong></li></ul><p>All members are welcome at both sessions!</p>"
+  },
+  {
     question: 'What skills will I learn?',
     answer: 'Members learn CAD design, programming (Java/C++/Python), electrical wiring, mechanical fabrication, project management, and communication — all of which translate directly to college and STEM careers.'
   },
@@ -86,9 +90,8 @@ export default function FAQ() {
                 />
               </button>
               {openIndex === index && (
-                <p className="pb-4 text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-                  {faq.answer}
-                </p>
+                <div className="pb-4 text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}
+                     dangerouslySetInnerHTML={{ __html: faq.answer }} />
               )}
             </div>
           ))}

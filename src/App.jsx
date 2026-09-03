@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import MatrixChat from './components/MatrixChat';
 import FAQ from './components/FAQ';
-import { MessageSquare, HelpCircle, Home } from 'lucide-react';
+import HomePage from './components/HomePage';
+import CalendarPage from './components/CalendarPage';
+import { MessageSquare, HelpCircle, Home, Calendar } from 'lucide-react';
 import logo from './assets/output-onlinepngtools.png';
 
 const SESSION_KEY = 'mchs_session';
@@ -23,9 +25,10 @@ function Navigation({ currentView, setCurrentView, session, onLogout }) {
 
       <div className="flex items-center gap-1">
         {[
-          { view: 'home', icon: Home,          label: 'Home'  },
-          { view: 'chat', icon: MessageSquare, label: 'Chat'  },
-          { view: 'faq',  icon: HelpCircle,    label: 'FAQ'   },
+          { view: 'home',   icon: Home,          label: 'Home'   },
+          { view: 'chat',   icon: MessageSquare, label: 'Chat'   },
+          { view: 'faq',    icon: HelpCircle,    label: 'FAQ'    },
+          { view: 'calendar', icon: Calendar,    label: 'Calendar' },
         ].map(({ view, icon: Icon, label }) => {
           const active = currentView === view;
           return (
@@ -70,13 +73,19 @@ function Navigation({ currentView, setCurrentView, session, onLogout }) {
 }
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('chat');
+  const [currentView, setCurrentView] = useState('home');
   
   // Initialize session from localStorage if available
   let initialSession = null;
   try {
     const saved = localStorage.getItem(SESSION_KEY);
-    if (saved) initialSession = JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Validate session has required fields
+      if (parsed.userId && parsed.accessToken) {
+        initialSession = parsed;
+      }
+    }
   } catch { /* ignore */ }
   
   const [session, setSession] = useState(initialSession);
@@ -84,7 +93,7 @@ export default function App() {
   const handleVerified = (sessionData) => {
     setSession(sessionData);
     localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
-    setCurrentView('chat');
+    setCurrentView('home');
   };
 
   const handleLogout = () => {
@@ -92,6 +101,25 @@ export default function App() {
     localStorage.removeItem(SESSION_KEY);
     setCurrentView('home');
   };
+
+  // Handle hash changes for navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'faq' || hash === 'calendar') {
+        setCurrentView(hash);
+      } else if (hash === 'chat') {
+        setCurrentView('chat');
+      } else {
+        setCurrentView('home');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Initial check
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Not logged in — show landing
   if (!session) {
@@ -106,9 +134,10 @@ export default function App() {
         session={session}
         onLogout={handleLogout}
       />
+      {currentView === 'home' && <HomePage />}
       {currentView === 'chat' && <MatrixChat session={session} />}
       {currentView === 'faq'  && <FAQ />}
-      {currentView === 'home' && <MatrixChat session={session} />}
+      {currentView === 'calendar' && <CalendarPage session={session} setCurrentView={setCurrentView} />}
     </div>
   );
 }

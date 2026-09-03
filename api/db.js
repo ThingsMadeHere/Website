@@ -14,6 +14,27 @@ async function initDb() {
       verified    INTEGER     NOT NULL DEFAULT 0,
       created_at  TEXT        NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS calendar_events (
+      id          INTEGER     PRIMARY KEY AUTOINCREMENT,
+      title       TEXT        NOT NULL,
+      description TEXT,
+      date        TEXT        NOT NULL,
+      location    TEXT,
+      type        TEXT        DEFAULT 'meeting',
+      status      TEXT        DEFAULT 'pending',
+      proposed_by TEXT,
+      created_at  TEXT        NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS event_votes (
+      id          INTEGER     PRIMARY KEY AUTOINCREMENT,
+      event_id    INTEGER     NOT NULL REFERENCES calendar_events(id) ON DELETE CASCADE,
+      matrix_id   TEXT        NOT NULL,
+      vote        INTEGER     NOT NULL,
+      created_at  TEXT        NOT NULL DEFAULT (datetime('now')),
+      UNIQUE(event_id, matrix_id)
+    );
   `);
   console.log('DB schema ready');
 }
@@ -21,9 +42,19 @@ async function initDb() {
 // Wrap SQLite methods to match PostgreSQL pool interface
 const pool = {
   query: async (sql, params = []) => {
-    const stmt = db.prepare(sql);
+    // Convert PostgreSQL-style parameters ($1, $2, etc.) to SQLite-style (?)
+    const sqliteSql = sql.replace(/\$\d+/g, '?');
+    
+    const stmt = db.prepare(sqliteSql);
     if (sql.trim().toUpperCase().startsWith('SELECT')) {
-      return { rows: stmt.all(...params) };
+      const rows = stmt.all(...params);
+      // Convert SQLite integer booleans to JavaScript booleans
+      rows.forEach(row => {
+        if (row.verified !== undefined) {
+          row.verified = row.verified === 1;
+        }
+      });
+      return { rows };
     } else {
       stmt.run(...params);
       return { rowCount: db.changes };
